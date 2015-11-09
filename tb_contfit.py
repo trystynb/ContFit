@@ -2,7 +2,7 @@
 
 """ 
 TB_CONTFIT.PY
-V1.1 (06/11/2015)
+V1.1 (09/11/2015)
 	-Fixed zoom feature when add/remove points in continuum tweaker.
 
 Author: Trystyn Berg (trystynb@uvic.ca)

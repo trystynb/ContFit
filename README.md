@@ -5,7 +5,7 @@ Author: Trystyn Berg
 
 This readme contains a brief outline of the purpose of the code, the input/output requirements and formats, and a quick start guide to using the code.
 
-This GUI was written for astronomers to perform continuum fitting of QSO spectra for quasara absorption lines.
+This GUI was written for astronomers to perform continuum fitting of 1D QSO spectra for quasara absorption lines.
 ContFit could be extended to other continuum fitting purposes. The fit is found by the user clicking with their mouse
 along where they think the continuum is. All the click locations are recorded and used to fit a cubic spline to the
 continuum. The input object and error spectra (FITS formatted; but can be edited to any format you want) are divded
@@ -42,9 +42,11 @@ Output files:
     
 Quick usage
 
-    Select input spectrum, error spectrum, and name your output files. Choose the "chunk" size
-    to view the spectrum one chunk at a time. If you are a first time user, use the drop down 
-    menu in the top corner to toggle a tutorial mode on.
+    Select input spectrum, error spectrum, and name your output files. NOTE: If you are
+    tweaking the continuum, make sure you output continuum file matches the name of your
+    original file as the software looks for a pickle file of the same name +'.p'. Choose 
+    the "chunk" size to view the spectrum one chunk at a time. If you are a first time
+    user, use the drop-down menu in the top corner to toggle a tutorial mode on.
     
     Once ready to fit conitnuum (and your wrist is relatively free of carpal tunnel pains...),
     click the Fit continuum button. This will start the continuum fitting procedure. Two 
@@ -60,7 +62,7 @@ Quick usage
     and 1-err to reflect the possible scatter about the continuum solely due to noise. This
     is only to guide the eye, and means nothing else.
     
-    If you are unhappy with bits of the fit, instead of refitting the continuum, the drop-down
+    If you are unhappy with parts of the fit; instead of refitting the continuum, the drop-down
     menu has a continuum fitting feature. By using this, you can add/remove points from the
     spline and see how that affects the continuum. Once it is tweaked to your satisfaction,
     click "save spline" button and exit. This will keep the spline for later, as well as update

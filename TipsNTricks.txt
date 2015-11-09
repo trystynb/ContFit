@@ -1,0 +1,49 @@
+Here is a list of insider tips and tricks to help you use TB_CONTFIT:
+
+GENERAL
+-You can run from the command line as follows:
+    tb_contfit.py '<input spectrum path/file>' '<output spectrum filename>' '<error spectrum filename>' '<chunk size>' '<output continuum ascii filename>'
+This way, if you want to batch run or keep track of what files you
+used, you can save this comamnd in a shell script or something.
+
+FIT CONTINUUM
+-If you click the "Fit Continuum" button by accident, or half way
+through the fit you no longer like the fit and don't want to save
+what you have done, just close the continuum fitting window. This 
+will cancel the fit.
+
+-If you feel like you need to see more of the spectrum before you
+start fitting the chunk, click behind the big red point. This will
+automatically add another chunk size until you start drawing a
+continuum line.
+
+-If the spectrum chunk is not fitting completely within the fitting
+window, you can use the zoom/pan toolbar. HOWEVER only click within
+the red point and your last click, otherwise you will end up drawing
+where you click... Another option is to play with the chunk size a bit
+until you find an apt size where you can fit enough continuum to use
+those features.
+
+TWEAK CONTINUUM
+-You need to have run FIT CONTINUUM once before using the tweaker so
+that you can generate the pickled spline points. If you all ready have
+spline points, you can create your own pickle file. Simply run:
+    cPickle.dump([xspline,yspline],open(splinefile,'wb'))
+where XSPLINE/YSPLINE are python lists of the x/y coordinates (respectively)
+of the spline points. SPLINEFILE should be the name of your ASCII
+continuum file, with '.p' added to the end.
+
+-Beware using the zoom/pan function then clicking add/remove points. Make
+sure you hit the zoom/pan button again so you have a regular cursor to
+select the point. The program will complain, and nothing will happen.
+
+-If you accidentaly close the continuum tweaker plot window, reopen it
+using the menu button.
+
+-To exit TB_CONTFIT entirely, you have to click "Exit" button in the
+continuum tweaker menu, then Menu>Exit in the drop-down menu.
+
+-If you don't like your newest spline, don't click save spline. Upon
+exiting the continuum tweaker mode, it will take whatever pickled 
+spline it had last and update files.
+

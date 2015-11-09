@@ -2,7 +2,8 @@
 
 """ 
 TB_CONTFIT.PY
-V1.0 (06/11/2015)
+V1.1 (06/11/2015)
+	-Fixed zoom feature when add/remove points in continuum tweaker.
 
 Author: Trystyn Berg (trystynb@uvic.ca)
 
@@ -324,7 +325,7 @@ ATTRIBUTES:
 
 INTERNAL FUNCTIONS:
 	CT.MAKEPLOT() - Generates the plotting window (CT.TFPLOT) for displaying the plots for tweaking
-	CT.REFRESH() - Refreshes the plotting window (CT.TFPLOT) in a particular way
+	CT.REFRESH(YREFRESH=TRUE) - Refreshes the plotting window (CT.TFPLOT) in a particular way
 	CT.ADDPOINT() - Run a MPL event to add a spline point, and run CT.CLICKADD()	
 	CT.REMOVEPOINT() - Run a MPL event to remove a spline point, and run CT.CLICKREMOVE()
 	CT.QUITEDIT(CID) - Quit an MPL event (with id CID)
@@ -461,12 +462,18 @@ class ContTweaker:
 
 
 
-	def Refresh(self):
+	def Refresh(self,yrefresh=True):
 		#This function takes any modifications that have taken place and updates
-		#the plots accordingly
+		#the plots accordingly. If YREFRESH=TRUE, this sets the y-axis to the
+		#original scaling. Otherwise keep the current values.
 
 		#Get the current x values (incase the user has zoomed in using toolbar)
 		xmin,xmax=self.ax2.get_xlim()
+		ymin,ymax=self.ax2.get_ylim()
+		#if YREFRESH=TRUE, set to original values (SELF.YMIN/YMAX)
+		if yrefresh:
+			ymin=self.ymin
+			ymax=self.ymax
 		#Clear CT.AX2/AX3 of all previous information
 		self.ax2.clear()
 		self.ax3.clear()
@@ -477,7 +484,7 @@ class ContTweaker:
 		ycont=self.spline(xcont)
 
 		#Update CT.AX1, perserve the x-axis bounds, and return to original y-axis
-		self.ax1.set_ylim(self.ymin,self.ymax)
+		self.ax1.set_ylim(ymin,ymax)
 		self.ax1.set_xlim(xmin,xmax)
 
 		#Update CT.AX2 by plotting new spline, also perserve the x-axis bounds
@@ -485,7 +492,7 @@ class ContTweaker:
 		self.ax2.plot(xcont,ycont,'b')
 		self.ax2.plot(self.xspline,self.yspline,'or',picker=5)
 		self.ax2.set_ylabel('Flux\n(tweaked fit)')
-		self.ax2.set_ylim(self.ymin,self.ymax)
+		self.ax2.set_ylim(ymin,ymax)
 		self.ax2.set_xlim(xmin,xmax)
 
 		#in CT.AX2, Divide out the spectrum&errorspectrum by the continuum, and plot
@@ -525,8 +532,8 @@ class ContTweaker:
 		self.yspline.append(event.ydata)
 		#Sort the spline data to be in order by wavelength
 		self.xspline,self.yspline=SortList(self.xspline,self.yspline)
-		#Refresh the plot with new data
-		self.Refresh()
+		#Refresh the plot with new data, but keep y-axis
+		self.Refresh(yrefresh=False)
 		#Close the MPL event stuff
 		self.QuitEdit(self.cidbut)
 	#Function ro remove a point when "Remove Point" button pressed
@@ -550,8 +557,8 @@ class ContTweaker:
 				#Remove that point from the spline, I think this is where sorting is important...
 				self.xspline.pop(ind)
 				self.yspline.pop(ind)
-		#Update the plot window
-		self.Refresh()
+		#Refresh the plot with new spline, but keep y-axis
+		self.Refresh(yrefresh=False)
 		#Close the event and stop the event loop
 		self.QuitEdit(self.cidpick)
 	#Function saves the spline using SaveSpline function
@@ -1072,3 +1079,4 @@ if __name__=="__main__":
         app.title('TB_CONTFIT')#Name of application
         print "Starting TB's continuum fitter"
         app.mainloop()
+

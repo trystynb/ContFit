@@ -1,5 +1,5 @@
 # ContFit
-A spectrum continuum fitter GUI based on drawing continuum with a mouse and fitting a cubic spline.
+A python-based continuum fitter GUI based on drawing continuum with a mouse and fitting a cubic spline to the spectrum.
 
 Author: Trystyn Berg
 

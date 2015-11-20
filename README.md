@@ -3,12 +3,12 @@ A spectrum continuum fitter GUI based on drawing continuum with a mouse and fitt
 
 Author: Trystyn Berg
 
-This readme contains a brief outline of the purpose of the code, the input/output requirements and formats, and a quick start guide to using the code.
+This readme contains a brief outline of the purpose of the code, the input/output requirements and formats, and a quick start guide to using the code. For a tutorial, please see CONTFIT_tutorial.pdf in the tutorial folder.
 
 This GUI was written for astronomers to perform continuum fitting of 1D QSO spectra for quasara absorption lines.
 ContFit could be extended to other continuum fitting purposes. The fit is found by the user clicking with their mouse
 along where they think the continuum is. All the click locations are recorded and used to fit a cubic spline to the
-continuum. The input object and error spectra (FITS formatted; but can be edited to any format you want) are divded
+continuum. The input object and error spectra (FITS formatted; but can be edited to any format you want) are divided
 by the generated continuum, and saved as output. The program also saves the continuum as an ASCII file, as well as
 a python binary pickle file with the x/y coordinates of the spline (the mouse clicks).
 

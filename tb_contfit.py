@@ -2,8 +2,9 @@
 
 """ 
 TB_CONTFIT.PY
-V1.1 (09/11/2015)
-	-Fixed zoom feature when add/remove points in continuum tweaker.
+V1.2 (15/07/2016)
+	-Included cuntinous point editor
+	-Fixed bugs with opening new files.
 
 Author: Trystyn Berg (trystynb@uvic.ca)
 
@@ -529,6 +530,7 @@ class ContTweaker:
 		self.TweakPlot.start_event_loop(0)
 		#If use continuous button is on, repeat adding points
 		while self.useContinuous.get():
+			if usetutorial: tkMessageBox.showinfo("Help Message", "Continuous point addition on. Keep adding points.")
 			try:
 				self.cidbut=self.TweakPlot.mpl_connect('button_press_event',self.ClickAdd)
 				self.TweakPlot.start_event_loop(0)
@@ -553,6 +555,7 @@ class ContTweaker:
 		self.TweakPlot.start_event_loop(0)
 		#If Use continuous button is on, repeat removing points
 		while self.useContinuous.get():
+			if usetutorial: tkMessageBox.showinfo("Help Message", "Continuous point removal on. Keep removing points.")
 			try:
 				self.cidpick=self.TweakPlot.mpl_connect('pick_event',self.ClickRemove)
 				self.TweakPlot.start_event_loop(0)

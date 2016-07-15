@@ -63,7 +63,7 @@ Quick usage
     is only to guide the eye, and means nothing else.
     
     If you are unhappy with parts of the fit; instead of refitting the continuum, the drop-down
-    menu has a continuum fitting feature. By using this, you can add/remove points from the
+    menu has a continuum tweaking feature. By using this, you can add/remove points from the
     spline and see how that affects the continuum. Once it is tweaked to your satisfaction,
     click "save spline" button and exit. This will keep the spline for later, as well as update
     your output files.

@@ -47,3 +47,5 @@ continuum tweaker menu, then Menu>Exit in the drop-down menu.
 exiting the continuum tweaker mode, it will take whatever pickled 
 spline it had last and update files.
 
+-If you need to continuously add/remove points, select the 'continuous'
+point-editing mode using the radio button.

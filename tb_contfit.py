@@ -335,9 +335,9 @@ INTERNAL FUNCTIONS:
 	CT.CLICKREMOVE() - Find the associated spline point with the mouse event and remove from CT.XSPLINE/CT.YSPLINE
 
 Notes:
-	-CT.CLICKREMOVE is sometimes a bit buggy. Not 100% what the problem is.
+	-CT.CLICKREMOVE is sometimes a bit buggy. Not 100% sure what the problem is.
 	-You CANNOT remove the first/last spline point. if you want to get rid of it, generate
-		a point before/after it.
+		a point outside the current point.
 
 """
 class ContTweaker:
@@ -375,18 +375,20 @@ class ContTweaker:
 
 
 		
-		#In development: Continous editing rather than having to click
-		""" 
-		MODES=[("Single/Stop",False),("Continuous",True)]
+		#Toggle between a Continous-editing  and single click modes
+		MODES=[("Single",False),("Continuous",True)]
 		self.useContinuous=Tkinter.BooleanVar()
 		self.useContinuous.set(False)
 		ii=1
+		labelMode=Tkinter.StringVar()
+		labelmode=Tkinter.Label(self.popup,textvariable=labelMode,anchor="w",fg="black")
+		labelmode.grid(column=1, row=0, columnspan=2, sticky='S')
+		labelMode.set(u"Point-editing mode")
 		for text,mode in MODES:
 			b=Tkinter.Radiobutton(self.popup,text=text,variable=self.useContinuous,value=mode)
 			b.grid(column=ii,row=1)
 			ii+=1
 			if ii==1: b.select()
-		"""
 
 		#Wait until the window is closed (i.e. CT.EXIT() is run by clicking EXIT button)
 		self.popup.wait_window()
@@ -525,6 +527,12 @@ class ContTweaker:
 		#Start mouse click event, and run CT.ClickAdd
 		self.cidbut=self.TweakPlot.mpl_connect('button_press_event',self.ClickAdd)
 		self.TweakPlot.start_event_loop(0)
+		#If use continuous button is on, repeat adding points
+		while self.useContinuous.get():
+			try:
+				self.cidbut=self.TweakPlot.mpl_connect('button_press_event',self.ClickAdd)
+				self.TweakPlot.start_event_loop(0)
+			except: self.useContinuous.set(False)
 	#Given a mouse event for adding a point...	
 	def ClickAdd(self,event):
 		#Grab the x/y coordiantes of the click, and add to spline
@@ -543,6 +551,13 @@ class ContTweaker:
 		#Start MPL event for picking an MPL artist, and start the loop. Run CT.ClickRemove
 		self.cidpick=self.TweakPlot.mpl_connect('pick_event',self.ClickRemove)
 		self.TweakPlot.start_event_loop(0)
+		#If Use continuous button is on, repeat removing points
+		while self.useContinuous.get():
+			try:
+				self.cidpick=self.TweakPlot.mpl_connect('pick_event',self.ClickRemove)
+				self.TweakPlot.start_event_loop(0)
+			except:
+				self.useContinuous.set(False)
 	#Given a picker event for removing a point...
 	def ClickRemove(self,event):
 		#Get the spline point that you picked, it's x and y coordinates
@@ -799,7 +814,7 @@ class simpleapp_tk(Tkinter.Tk):# Base for main window
 		#Label the window
 		browser_opt['title']='Name of output continuum file'
 		#Run the dialog, and save the output to the output continuum file name
-		self.entryOut.set(tkFileDialog.askopenfilename(**browser_opt))
+		self.entryOut.set(tkFileDialog.asksaveasfilename(**browser_opt))
 		return
 
 	#TK widget for finding the output continuum-fitted spectrum. Save it to ENTRYCONT when found
@@ -813,7 +828,7 @@ class simpleapp_tk(Tkinter.Tk):# Base for main window
 		#Label the window
 		browser_opt['title']='Name of output continuum-fitted spectrum'
 		#Run the dialog, and save the output to the continuum-fitted spectrum file name
-		self.entryCont.set(tkFileDialog.askopenfilename(**browser_opt))
+		self.entryCont.set(tkFileDialog.asksaveasfilename(**browser_opt))
 		return
 
 	#Function to toggle tutorial mode on/off.
